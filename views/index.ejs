@@ -7,20 +7,62 @@
     <title>Portfolio of Student</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<style>
+    .intro ul.techstack {
+    list-style: disc;
+    padding-left: 20px;
+    max-height: none;
+    overflow: visible;
+    display: block;
+}
+
+.intro ul.techstack li {
+    background: none;
+    border-left: none;
+    padding: 2px 0;
+    color:beige;
+}
+</style>
 
 <body>
 
-
-
-    <div class="menu">
-        <%- include('partials/navbar') %>
+    <%- include('partials/navbar') %>
+        <div class="menu">
             <div class="intro">
                 <h1>I am Me</h1>
-                <p>A simple portfolio website with <i><b>CSS & HTML</b></i> now has turned into a dynamic HTML
-                    markup using plain <b>Javascript</b> to dynamically inject backend data into HTML before sending
-                    it to the user's browser.
+                <p>A simple portfolio website with <b>CSS</b> & <b>HTML</b>> now uses <strong>server-side rendering
+                        (EJS)</strong>
+                    to dynamically inject backend data into HTML before sending it to the browser.</p>
+
+                <p style="margin-bottom: 1%; font-weight: bold;">Techstack:</p>
+                <ul class="techstack">
+                    <li>Node.js + Express</li>
+                    <li>MongoDB (visitor data storage)</li>
+                    <li>Docker (containerized app + database for consistent local setup)</li>
+                </ul>
+                <p style="margin-top: 2%; color:bisque;">Mongo Express is used during development to inspect the database directly.</p>
+
+                <h2>Visitors so far:</h2>
+                <ul>
+                    <% if (data && data.length> 0) { %>
+                        <% data.forEach(user=> { %>
+                            <li>
+                                <strong>
+                                    <%= user.name %>
+                                </strong> - <%= user.email %>
+                                    <p>
+                                        <%= user.message %>
+                                    </p>
+                                    <small>Submitted: <%= user.createdAt %></small>
+                            </li>
+                            <% }) %>
+                </ul>
+                <% } else { %>
+                    <li>No visitors yet.</li>
+                    <% } %>
+
             </div>
-    </div>
+        </div>
 
 </body>
 

@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <%- include('partials/navbar') %>
    <div class = "info">
-        <%- include('partials/navbar') %>
         <div class = "contact">
-            <h2>Contact Me</h2>
-            <form action="submit_form.php" method="post">
+            <h2>Send a message to me </h2>
+            <form action="/submit" method="POST">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
         

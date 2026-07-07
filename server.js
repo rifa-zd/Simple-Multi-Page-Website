@@ -29,20 +29,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
 
-const MONGO_URL = "mongodb://admin:pass@localhost:27017";
+const MONGO_URL = "mongodb://root:admin@mongo:27017";
 const client = new MongoClient(MONGO_URL);
 
-//
+//server start & connect
+await client.connect();
 
 // # page routes
 app.get('/', async (req, res) => {
-    await client.connect(URL);
     console.log('Connected successfully  to MongoDB');
 
     const db = client.db("visitor_db");
     // fetching from DB
     const data = await db.collection('visitors').find({}).toArray();
-    client.close();
+    // client.close();
 
     res.render('index', { data });
 });
@@ -55,7 +55,6 @@ app.post('/submit', async (req, res) => {
     const { name, email, message } = req.body;
 
     console.log(req.body);
-    await client.connect(URL);
 
     // Insert data into MongoDB
     const db = client.db("visitor_db");
@@ -69,8 +68,9 @@ app.post('/submit', async (req, res) => {
 
     console.log(data);
     console.log("data inserted in DB");
-    client.close();
+    res.redirect('/');
 })
+
 
 app.get('/education', (req, res) => {
     res.render('education');
@@ -92,3 +92,10 @@ app.get('/skill', (req, res) => {
 app.use((req, res) => {
     res.status(404).send('Page not found');
 })
+
+//  graceful shutdown
+process.on('SIGINT', async () => {
+    await client.close();
+    console.log('MongoDB connection closed');
+    process.exit(0);
+});
